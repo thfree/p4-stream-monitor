@@ -1,0 +1,91 @@
+# nginx.conf.template
+
+# Число рабочих процессов
+worker_processes auto;
+
+# Уменьшает число системных вызовов
+timer_resolution 100ms;
+
+# В два раза больше чем максимальное количество возможных подключений
+worker_rlimit_nofile 2048;
+
+# Приоритет рабочих процессов от -20 до 20
+worker_priority 0;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    #
+    server_names_hash_bucket_size 64;
+    #
+    include mime.types;
+    default_type application/octet-stream;
+
+    # Cкрыть версию nginx
+    server_tokens off;
+
+    index index.html index.php;
+
+    # Рекомендуется добавить:
+    ssl_session_cache shared:le_nginx_SSL:10m;
+    ssl_session_timeout 1440m;
+    ssl_session_tickets off;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers off;
+    ssl_ciphers "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384";
+
+    # HSTS (ngx_http_headers_module is required) (63072000 seconds)
+    add_header Strict-Transport-Security "max-age=63072000" always;
+
+    # OCSP stapling
+    ssl_stapling on;
+    ssl_stapling_verify on;
+
+    # Proxy
+    proxy_buffer_size 128k;
+    proxy_buffers 4 256k;
+    proxy_busy_buffers_size 256k;
+
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    directio 512;
+    output_buffers 1 128k;
+
+    # Сжатие
+    gzip on;
+    gzip_http_version 1.0;
+    gzip_buffers 64 8k;
+    gzip_comp_level 2;
+    gzip_disable msie6;
+    gzip_min_length 1100;
+    gzip_proxied any;
+    #  gzip_types          *;
+    gzip_types text/plain text/css application/x-javascript text/xml application/xml application/xml+rss text/javascript application/json;
+    #  gzip_vary;
+
+    # Таймаут, по истечению которого keep-alive соединение с клиентом не будет закрыто со стороны сервера
+    #keepalive_timeout      2m;
+    keepalive_timeout 65;
+
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
+    # Включение конфигов из папки conf.d
+    include /etc/nginx/conf.d/*.conf;
+
+    server {
+        server_name localhost;
+        location /basic_status {
+            stub_status on;
+
+            access_log off;
+
+            allow 127.0.0.1;
+            allow ::1;
+            deny all;
+        }
+    }
+}

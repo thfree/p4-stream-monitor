@@ -1,0 +1,17 @@
+# config/servers.yaml.example
+# Пример конфигурационного файла для серверов Perforce
+# Этот файл должен быть скопирован как config/servers.yaml
+
+# config/servers.yaml
+servers:
+  - name: "Production Server"          # Человеко-читаемое имя сервера
+    p4port: "p4-server1:1666"          # Адрес и порт сервера Perforce
+    p4user: "p4monitor"                # Имя пользователя для аутентификации
+    password: "your_password_here"     # Если не указан, будет использован P4_PASSWORD из .env или запрос
+                                       # Если не указан, потребуется интерактивный ввод
+    stream_mask: "*role*"              # Маска для фильтрации стримов (по имени)
+
+  - name: "Development Server"
+    p4port: "p4-server2:1666"
+    p4user: "p4monitor"
+    stream_mask: "*dev*"

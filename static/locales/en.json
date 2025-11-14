@@ -1,0 +1,108 @@
+{
+    "app": {
+        "title": "🎯 Perforce Stream Monitor"
+    },
+    "search": {
+        "placeholder": "🔍 Search streams...",
+        "clear": "Clear search",
+        "results": "🔍 Found <strong>{count}</strong> streams in <strong>{servers}</strong> servers",
+        "noResults": "🔍 No results found for \"<strong>{query}</strong>\""
+    },
+    "btn": {
+        "toggleAll": "📁 Collapse all",
+        "toggleAllExpanded": "📂 Collapse all",
+        "syncConfig": "🔄 Sync with config",
+        "refreshAll": "🔄 Refresh all streams",
+        "scrollTop": "Back to top"
+    },
+    "server": {
+        "streams": "streams",
+        "scrollHint": "(scroll inside block)",
+        "listStreams": "📋 Streams",
+        "syncStreams": "🔄 Synchronize",
+        "updateWithSizes": "📊 Update with sizes",
+        "expandAll": "Expand all servers",
+        "collapseAll": "Collapse all servers"
+    },
+    "stream": {
+        "size": "size",
+        "files": "files",
+        "updated": "updated",
+        "never": "never",
+        "refresh": "Refresh stream",
+        "stats": "Show statistics"
+    },
+    "modal": {
+        "close": "Close",
+        "sync": "🔄 Synchronize",
+        "streamsTitle": "📋 Server {server} streams ({count} items)"
+    },
+    "stats": {
+        "title": "📈 Statistics: {stream}",
+        "currentSize": "Current size:",
+        "maxSize": "Maximum size:",
+        "minSize": "Minimum size:",
+        "avgSize": "Average size:",
+        "change": "Change over period:",
+        "records": "Records count:",
+        "period": "Period:",
+        "refresh": "🔄 Refresh",
+        "loading": "⏳ loading...",
+        "noData": "no data",
+        "chartLabel": "Stream size",
+        "period7days": "7 days",
+        "period30days": "30 days",
+        "period90days": "90 days",
+        "period1year": "1 year",
+        "periodAllTime": "All time"
+    },
+    "notification": {
+        "loading": "Loading...",
+        "success": "✓ Success",
+        "error": "✗ Error",
+        "syncSuccess": "Sync completed",
+        "updateSuccess": "Update completed",
+        "languageChanged": "Language changed to {language}",
+        "browserNotSupported": "Your browser does not support chart display",
+        "loadError": "Error loading statistics",
+        "blockedOperation": "⏳ temporarily blocked. Wait for the current mass operation to complete.",
+        "massOperationStart": "🚀 Mass {operation} started. Other operations are temporarily blocked.",
+        "massOperationComplete": "✅ Mass {operation} completed. All operations unlocked.",
+        "serverUpdateError": "❌ Server update error \"{server}\": {details}",
+        "streamUpdateError": "❌ Stream update error \"{stream}\" (server: {server}): {details}",
+        "syncError": "❌ Sync error {target}: {details}",
+        "config": "configuration",
+        "syncOperation": "synchronization",
+        "syncServersInProgress": "Syncing servers with config...",
+        "unknownError": "Unknown error",
+        "updatingAllStreams": "⏳ Updating all streams...",
+        "updateAllStreams": "update all streams",
+        "massUpdateStarted": "✅ Mass update started! Page will reload in 3 seconds...",
+        "serverError": "Server error",
+        "updateAllError": "Error updating all streams",
+        "updating": "updating",
+        "server": "Server",
+        "serverUpdate": "server update",
+        "updatingServerWithSizes": "Updating server \"{server}\" with size calculation...",
+        "serverUpdated": "Server \"{server}\" updated: +{added} ↑{updated} -{removed}",
+        "massUpdate": "mass update",
+        "getStreamsError": "Error getting streams",
+        "syncing": "⏳ Syncing...",
+        "syncCompleted": "Synchronized: +{added} -{removed} streams",
+        "streamSync": "stream synchronization",
+        "syncingServerStreams": "Syncing server \"{server}\" streams...",
+        "serverStreamsSynced": "Server \"{server}\" streams synchronized: +{added} -{removed}",
+        "stream": "Stream",
+        "unknownServer": "unknown server",
+        "streamUpdate": "stream update",
+        "updatingStream": "Updating stream \"{stream}\"...",
+        "streamSizeUpdated": "Stream \"{stream}\" size updated: {size}",
+        "updateError": "Update error",
+        "updatingInterface": "Updating interface..."
+    },
+    "language": {
+        "change": "Change language",
+        "ru": "Russian",
+        "en": "English"
+    }
+}

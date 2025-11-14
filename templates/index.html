@@ -1,0 +1,18 @@
+<!-- templates\index.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    {% for server in servers %}
+        {% include 'partials/server.html' %}
+    {% endfor %}
+
+    <button
+        class="btn-refresh-all btn-success btn-large"
+        id="btn-all"
+        data-i18n="btn.refreshAll"
+        data-i18n-title="btn.refreshAll"
+        title="Обновить все стримы на всех серверах"
+    >
+        🔄 Обновить все стримы
+    </button>
+{% endblock %}

@@ -1,0 +1,133 @@
+stages:
+  - prepare
+  - sync
+  - cleanup
+
+variables:
+  GIT_STRATEGY: clone
+
+# Подготовительный этап
+sync-preparation:
+  stage: prepare
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^sync-.*/
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_MESSAGE =~ /\[github-sync\]/i
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: manual
+  before_script:
+    - git --version || (sudo apt-get update && sudo apt-get install -y git)
+  script:
+    - |
+      # Проверка наличия токена
+      if [ -z "$GH_MIRROR_TOKEN" ]; then
+        echo "ОШИБКА: GH_MIRROR_TOKEN не установлен"
+        exit 1
+      fi
+      
+      # Настройка git
+      git config --global user.email "ruslan@thfree.ru"
+      git config --global user.name "Komlev Ruslan"
+      git config --global push.default simple
+  artifacts:
+    when: on_success
+    paths:
+      - .git/
+    expire_in: 1 hour
+
+# Основной этап синхронизации
+sync-to-github:
+  stage: sync
+  needs: ["sync-preparation"]
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^sync-.*/
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_MESSAGE =~ /\[github-sync\]/i
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: manual
+  script:
+    - |
+      echo "=== ВЫПОЛНЕНИЕ СИНХРОНИЗАЦИИ ==="
+      
+      # Настройка remote для GitHub
+      if git remote get-url github >/dev/null 2>&1; then
+        echo "Обновление существующего remote 'github'..."
+        git remote set-url github https://$GH_MIRROR_TOKEN@github.com/thfree/p4-stream-monitor.git
+      else
+        echo "Добавление нового remote 'github'..."
+        git remote add github https://$GH_MIRROR_TOKEN@github.com/thfree/p4-stream-monitor.git
+      fi
+      
+      # Проверка подключения к GitHub
+      echo "Проверка подключения к GitHub..."
+      git ls-remote github >/dev/null && echo "Подключение к GitHub успешно" || {
+        echo "Ошибка подключения к GitHub";
+        exit 1;
+      }
+      
+      # Создание временной ветки для синхронизации
+      echo "Создание ветки для синхронизации..."
+      if git show-ref --verify --quiet refs/heads/temp-branch; then
+        echo "Удаление существующей временной ветки..."
+        git branch -D temp-branch
+      fi
+      
+      # Создаем новую ветку с текущим состоянием
+      git checkout --orphan temp-branch
+      
+      # Добавляем все файлы из текущего коммита
+      git rm -rf --cached .
+      git add -A
+      
+      # Создание коммита синхронизации
+      echo "Создание коммита синхронизации..."
+      SYNC_MESSAGE="Sync from GitLab: $(date +"%Y-%m-%d %H:%M:%S")"
+      
+      git commit -m "$SYNC_MESSAGE"
+      
+      # Пуш в GitHub
+      echo "Отправка изменений в GitHub..."
+      git push -f github temp-branch:main
+      
+      echo "Синхронизация успешно выполнена"
+  artifacts:
+    when: on_success
+    paths:
+      - .git/
+    expire_in: 30 minutes
+
+# Очистка временных данных
+sync-cleanup:
+  stage: cleanup
+  needs:
+    - job: "sync-to-github"
+      optional: true
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^sync-.*/
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_MESSAGE =~ /\[github-sync\]/i
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: manual
+  when: always
+  script:
+    - |
+      echo "=== ОЧИСТКА ==="
+      
+      # Восстанавливаем исходное состояние репозитория
+      echo "Восстановление исходного состояния..."
+      git reset --hard HEAD
+      
+      # Переключаемся на исходную ветку/коммит
+      echo "Переключение на исходный коммит..."
+      git checkout -f $CI_COMMIT_SHA
+      
+      # Удаление временной ветки локально (если существует)
+      if git show-ref --verify --quiet refs/heads/temp-branch; then
+        echo "Удаление временной ветки temp-branch..."
+        git branch -D temp-branch
+      fi
+      
+      # Очистка remotes
+      if git remote get-url github >/dev/null 2>&1; then
+        echo "Удаление remote 'github'..."
+        git remote remove github
+      fi
+      
+      echo "Очистка завершена"

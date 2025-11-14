@@ -1,0 +1,38 @@
+<!-- Заголовок и кнопки управления -->
+<!-- templates\partials\header.html -->
+<div class="header">
+    <div class="header-left">
+        <h1 data-i18n="app.title">🎯 Perforce Stream Monitor</h1>
+        <div class="search-section">
+            <div class="search-container">
+                <input
+                    type="text"
+                    id="stream-search"
+                    data-i18n-placeholder="search.placeholder"
+                    placeholder="🔍 Поиск стримов..."
+                    class="search-input"
+                />
+                <button
+                    id="btn-clear-search"
+                    class="btn-clear-search"
+                    data-i18n-title="search.clear"
+                    title="Очистить поиск"
+                >
+                    ✕
+                </button>
+            </div>
+            <div id="search-results-info" class="search-results-info"></div>
+        </div>
+    </div>
+    <div class="controls">
+        <button class="btn-collapse-all" id="btn-toggle-all" data-i18n="btn.toggleAll">
+            📁 Свернуть все
+        </button>
+        <button class="btn-sync-config btn-secondary" id="btn-sync" data-i18n="btn.syncConfig">
+            🔄 Синхронизировать с конфигом
+        </button>
+        <div class="language-switcher">
+            <!-- Автоматически рендерится JavaScript -->
+        </div>
+    </div>
+</div>

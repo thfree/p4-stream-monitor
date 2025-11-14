@@ -1,0 +1,29 @@
+
+# Environments
+.git
+.env
+.venv
+.idea
+
+__pycache__
+*.pyc
+
+/ssl/*
+/data/*
+/logs/*
+/instance/*
+
+hosts.txt
+servers.yaml
+nginx/conf.d/default.conf
+nginx/nginx.conf
+.p4tickets
+
+docker-compose.prod.yml
+Dockerfile.prod
+
+*.session
+*.session-journal
+
+# Разрешите .gitkeep во всех папках, даже в игнорируемых
+!**/.gitkeep

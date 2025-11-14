@@ -1,0 +1,15 @@
+# docker-compose.build.yml
+
+services:
+  p4-stream-monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - P4_VERSION=r25.1
+        - VERSION=${VERSION:-0.0.0}
+    image: ${JFROG_REGISTRY}/${REPOSITORY}/${IMAGE_NAME}:${TAG:-latest}
+    environment:
+      - ARTIFACTORY_URL=${JFROG_REGISTRY}
+    env_file:
+      - .env

@@ -1,0 +1,102 @@
+<!-- templates\partials\server.html -->
+<div
+    class="server"
+    id="server-{{ server.id }}"
+    data-server-id="{{ server.id }}"
+    data-server-name="{{ server.name }}"
+    data-streams-count="{{ server.streams|length }}"
+>
+    <div class="server-header">
+        <div class="server-title-section">
+            <div class="toggle-icon">▼</div>
+            <h2 class="server-title">{{ server.name }}</h2>
+        </div>
+        <div class="server-controls">
+            <button
+                class="btn-info btn-small"
+                id="btn-list-{{ server.id }}"
+                data-i18n="server.listStreams"
+                data-i18n-title="server.listStreams"
+                title="Показать список стримов"
+            >
+                📋 Стримы
+            </button>
+            <button
+                class="btn-success btn-small"
+                id="btn-sync-streams-{{ server.id }}"
+                data-i18n="server.syncStreams"
+                data-i18n-title="server.syncStreams"
+                title="Синхронизировать список стримов"
+            >
+                🔄 Синхронизировать
+            </button>
+            <button
+                class="btn-primary btn-small"
+                id="btn-server-{{ server.id }}"
+                data-i18n="server.updateWithSizes"
+                data-i18n-title="server.updateWithSizes"
+                title="Полное обновление с расчётом размеров"
+            >
+                📊 Обновить с размерами
+            </button>
+        </div>
+    </div>
+
+    <div class="server-info">
+        {{ server.p4port }} • {{ server.streams|length }} 
+        <span data-i18n="server.streams">стримов</span>
+        <span class="scroll-hint" style="display: none" data-i18n="server.scrollHint">
+            (прокрутка внутри блока)
+        </span>
+    </div>
+
+    <div class="streams-container">
+        <div class="streams-list">
+            {% for stream in server.streams %}
+            <div class="stream" id="stream-{{ stream.id }}">
+                <div class="stream-controls">
+                    <button
+                        class="btn-primary btn-small"
+                        id="btn-stream-{{ stream.id }}"
+                        data-i18n-title="stream.refresh"
+                        title="Обновить размер стрима"
+                    >
+                        🔄
+                    </button>
+                    <button
+                        class="btn-stats btn-small"
+                        id="btn-stats-{{ stream.id }}"
+                        data-i18n-title="stream.stats"
+                        title="Показать статистику и график размера"
+                        onclick="StreamStats.showStats({{ stream.id }}, '{{ stream.name }}')"
+                    >
+                        📈
+                    </button>
+                </div>
+
+                <div class="stream-info">
+                    <span class="stream-name">{{ stream.name }}</span> —
+                    <span class="stream-size" id="size-{{ stream.id }}">
+                        {{ stream.size_bytes | filesizeformat }}
+                    </span>
+                    {% if stream.file_count is defined %}
+                    <span class="file-count" id="file-count-{{ stream.id }}" 
+                        data-exact-count="{{ stream.file_count }}"
+                        data-original-count="{{ stream.file_count }}"
+                        title="{{ '{:,}'.format(stream.file_count) }}">
+                        • {{ '{:,}'.format(stream.file_count) }} <span data-i18n="stream.files">файлов</span>
+                    </span>
+                    {% endif %}
+                </div>
+
+                <div class="timestamp" id="timestamp-{{ stream.id }}">
+                    <span data-i18n="stream.updated">обновлено</span>: 
+                    {% if stream.last_updated %}{{ stream.last_updated.strftime('%Y-%m-%d %H:%M') }}{% else %}<span data-i18n="stream.never">никогда</span>{% endif %}
+                </div>
+
+                <div class="status" id="status-{{ stream.id }}"></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

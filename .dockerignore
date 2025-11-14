@@ -1,0 +1,61 @@
+# .dockerignore
+
+# Version control
+.git
+.gitignore
+.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Testing and logs
+logs/*.log
+#logs/
+
+# Environment files
+.env.example
+.env.production
+.env.development
+.env.local
+.env
+
+# SSL certificates
+*.key
+*.pem
+*.crt
+ssl/
+
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Application specific
+instance/*.db
+config/hosts.txt
+config/servers.yaml
+nginx/conf.d/default.conf
+nginx/nginx.conf
+script/build-and-push.*
+images/
+.gitlab-ci.yml
+.p4tickets

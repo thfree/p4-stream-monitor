@@ -1,0 +1,52 @@
+# docker-compose.yml
+
+services:
+  p4-monitor:
+    image: p4-stream-monitor:latest
+    container_name: p4-stream-monitor
+    environment:
+      - FLASK_ENV=production
+    env_file:
+      - .env
+    volumes:
+      - p4_data:/app/instance
+      - p4_logs:/app/logs
+      #
+      - ./p4-monitor/config:/app/config
+      - ./nginx:/app/nginx
+      #
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    networks:
+      - p4-monitor-network
+
+  nginx-proxy:
+    image: nginx:trixie
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - nginx_logs:/var/log/nginx
+      #
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      #
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    networks:
+      - p4-monitor-network
+    depends_on:
+      - p4-monitor
+
+networks:
+  p4-monitor-network:
+    driver: bridge
+
+volumes:
+  p4_data:
+  p4_logs:
+  nginx_logs:

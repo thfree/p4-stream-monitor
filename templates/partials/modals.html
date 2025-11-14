@@ -1,0 +1,135 @@
+<!-- Модальное окно для списка стримов -->
+<!-- templates\partials\modals.html -->
+<div id="streams-modal" class="streams-modal">
+    <div class="streams-modal-content">
+        <h3 id="modal-title" data-i18n="modal.streamsTitle">📋 Стримы сервера</h3>
+        <div class="stream-list" id="stream-list"></div>
+        <div class="modal-buttons">
+            <button
+                class="modal-btn modal-btn-close"
+                id="modal-close-btn"
+                data-i18n="modal.close"
+            >
+                Закрыть
+            </button>
+            <button
+                class="modal-btn modal-btn-success"
+                id="modal-sync-btn"
+                data-i18n="modal.sync"
+            >
+                🔄 Синхронизировать
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для статистики стрима -->
+<div id="stats-modal" class="streams-modal">
+    <div class="streams-modal-content stats-modal-content">
+        <h3 id="stats-modal-title" data-i18n="stats.title">
+            📈 Статистика стрима
+        </h3>
+
+        <div class="stats-container">
+            <!-- Левая колонка - числовая статистика -->
+            <div class="stats-info">
+                <div class="stat-item">
+                    <span class="stat-label" data-i18n="stats.currentSize"
+                        >Текущий размер:</span
+                    >
+                    <span
+                        class="stat-value"
+                        id="stats-current-size"
+                        data-i18n="stats.loading"
+                        >загрузка...</span
+                    >
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label" data-i18n="stats.maxSize"
+                        >Максимальный размер:</span
+                    >
+                    <span
+                        class="stat-value"
+                        id="stats-max-size"
+                        data-i18n="stats.loading"
+                        >загрузка...</span
+                    >
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label" data-i18n="stats.minSize"
+                        >Минимальный размер:</span
+                    >
+                    <span
+                        class="stat-value"
+                        id="stats-min-size"
+                        data-i18n="stats.loading"
+                        >загрузка...</span
+                    >
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label" data-i18n="stats.avgSize"
+                        >Средний размер:</span
+                    >
+                    <span
+                        class="stat-value"
+                        id="stats-avg-size"
+                        data-i18n="stats.loading"
+                        >загрузка...</span
+                    >
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label" data-i18n="stats.change"
+                        >Изменение за период:</span
+                    >
+                    <span
+                        class="stat-value"
+                        id="stats-change"
+                        data-i18n="stats.loading"
+                        >загрузка...</span
+                    >
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label" data-i18n="stats.records"
+                        >Количество записей:</span
+                    >
+                    <span class="stat-value" id="stats-records-count">0</span>
+                </div>
+            </div>
+            <!-- Правая колонка - график Chart.js -->
+            <div class="chart-container">
+                <canvas id="size-chart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="modal-buttons">
+            <div style="display: flex; align-items: center; gap: 10px">
+                <label for="stats-period" data-i18n="stats.period"
+                    >Период:</label
+                >
+                <select id="stats-period">
+                    <option value="7" data-i18n="stats.period7days">7 дней</option>
+                    <option value="30" selected data-i18n="stats.period30days">30 дней</option>
+                    <option value="90" data-i18n="stats.period90days">90 дней</option>
+                    <option value="365" data-i18n="stats.period1year">1 год</option>
+                    <option value="0" data-i18n="stats.periodAllTime">Всё время</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 10px">
+                <button
+                    class="modal-btn modal-btn-close"
+                    id="stats-close-btn"
+                    data-i18n="modal.close"
+                >
+                    Закрыть
+                </button>
+                <button
+                    class="modal-btn modal-btn-primary"
+                    id="stats-refresh-btn"
+                    data-i18n="stats.refresh"
+                >
+                    🔄 Обновить
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

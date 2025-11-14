@@ -1,0 +1,27 @@
+# docker-compose.dev.yml
+
+services:
+  p4-monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        P4_VERSION: r25.1
+    image: p4-stream-monitor-dev:latest
+    container_name: p4-stream-monitor-dev
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - DEBUG=True
+    volumes:
+      - .:/app # → Вся структура проекта
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    networks:
+      - p4-monitor-network
+
+networks:
+  p4-monitor-network:
+    driver: bridge

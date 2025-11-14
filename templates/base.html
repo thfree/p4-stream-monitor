@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!-- templates\base.html -->
+<html>
+    <head>
+        <title>Perforce Stream Monitor</title>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/main.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/components.css') }}"
+        />
+        <!-- Подключаем Chart.js для графиков -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <noscript>
+            <div class="no-js-warning">
+                ⚠️ Для полноценной работы приложения требуется JavaScript
+            </div>
+        </noscript>
+    </head>
+    <body>
+        <div class="container">
+            {% include 'partials/header.html' %}
+
+            {% block content %}{% endblock %}
+
+            <div class="last-updated">
+                Страница загружена:
+                <span id="page-loaded"
+                    >{{ now.strftime('%Y-%m-%d %H:%M:%S') }}</span
+                >
+                | Версия: <span id="app-version">{{ version }}</span>
+            </div>
+        </div>
+
+        <!-- Кнопка перемотки вверх -->
+        <button
+            class="scroll-to-top"
+            id="scrollToTop"
+            data-i18n-title="btn.scrollTop"
+            title="Вернуться к началу"
+        >
+            ↑
+        </button>
+
+        <!-- Фидбэк уведомление -->
+        <div id="sync-feedback" class="sync-feedback"></div>
+
+        {% include 'partials/modals.html' %}
+
+        <script src="/static/js/main.js"></script>
+    </body>
+</html>

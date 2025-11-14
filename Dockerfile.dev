@@ -1,0 +1,39 @@
+# Dockerfile.dev
+ARG P4_VERSION=r25.1
+
+FROM python:3.13-slim
+
+# Устанавливаем системные зависимости
+RUN apt-get update && apt-get install -y \
+    curl \
+    build-essential \
+    libssl-dev \
+    libffi-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Скачивание Perforce CLI
+ARG P4_VERSION
+RUN curl -fsSL "https://ftp.perforce.com/perforce/${P4_VERSION}/bin.linux26x86_64/p4" -o /usr/local/bin/p4 \
+    && chmod +x /usr/local/bin/p4
+
+# Создание структуры директорий
+RUN mkdir -p /app/logs /app/instance /app/config
+WORKDIR /app
+
+# Копирование requirements.txt
+COPY requirements.txt .
+
+# Установка зависимостей Python
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Переменные окружения для разработки
+ENV FLASK_ENV=development \
+    PYTHONPATH=/app \
+    PYTHONUNBUFFERED=1 \
+    DEBUG=True
+
+# Экспоз порта
+EXPOSE 5000
+
+# Запуск приложения
+CMD ["gunicorn", "--config", "config/gunicorn_dev.conf.py", "run:create_app()"]

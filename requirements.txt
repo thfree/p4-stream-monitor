@@ -1,0 +1,12 @@
+# requirements.txt
+# Файл зависимостей Python для проекта
+
+Flask                    # Веб-фреймворк для создания приложения
+Flask-SQLAlchemy         # Интеграция SQLAlchemy с Flask для работы с БД
+Flask-Migrate            # Миграции базы данных для Flask-SQLAlchemy
+alembic                  # Инструмент для миграций базы данных, используется с SQLAlchemy
+APScheduler              # Планировщик задач для фонового обновления данных
+PyYAML                   # Парсер YAML для чтения конфигурационных файлов
+python-dotenv            # Загрузка переменных окружения из .env файлов
+P4Python                 # Python клиент для Perforce
+gunicorn                 # WSGI HTTP сервер для Unix
